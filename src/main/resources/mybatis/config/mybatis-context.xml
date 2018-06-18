@@ -5,9 +5,11 @@
 <configuration>
   <typeAliases>
   	<!-- typealias 추가 -->
+  	<package name="com.inc.dayary.domain"/>
   </typeAliases>
   <mappers>
     <!-- mapper추가 -->
+    <mapper resource="mybatis/mapper/diary.xml"/>
   </mappers>
 </configuration>
 
