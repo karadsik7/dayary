@@ -7,5 +7,7 @@ import com.inc.dayary.domain.Diary;
 public interface DiaryService {
 
 	public List<Diary> list();
+
+	public void add(Diary diary);
 	
 }
