@@ -16,4 +16,6 @@ insert into diary values(seq_diary_id.nextval, 'test', '테스트제목', '테스트본문
 insert into diary values(seq_diary_id.nextval, 'test', '테스트제목2', '테스트본문2', sysdate);
 insert into diary values(seq_diary_id.nextval, 'test', '테스트제목3', '테스트본문3', sysdate);
 
+desc diary;
+
 select * from diary;
