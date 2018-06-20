@@ -19,3 +19,18 @@ insert into diary values(seq_diary_id.nextval, 'test', '테스트제목3', '테스트본�
 desc diary;
 
 select * from diary;
+
+
+--member
+
+create table member(
+    id varchar2(10) primary key,
+    password varchar2(10) not null,
+    name varchar2(30) not null,
+    email varchar2(30) not null unique,
+    gender char(1) check(gender in('m', 'f'))
+);
+
+desc member;
+
+insert into member values('admin', '1234', '관리자', 'asidfoajoifjiodsf@aa.aei', 'm');

@@ -1,0 +1,144 @@
+<#import "/spring.ftl" as spring />
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/include/header.html" />
+<link rel="stylesheet" href="/webjars/summernote/0.8.9/dist/summernote.css" />
+<title>Sign Up</title>
+</head>
+<body>
+<#include "/include/nav.html" />
+	<div class="container">
+		<form action="/member/signup" method="post" class="form form-horizontal">
+			<@spring.bind "member.id" />
+			<div class="form-group">
+				<label for="" class="control-label col-sm-2">ID</label>
+				<div class="col-sm-8">
+					<input type="text" name="${spring.status.expression}" id="${spring.status.expression}" 
+					class="form-control" value="${spring.status.value?default('')}"/>
+					<span class="error">${spring.status.errorMessage?default('')}</span>
+				</div>
+				<div class="col-sm-2">
+					<button class="btn btn-default btn-block" type="button" onclick="dupCheck();">중복 확인</button>
+				</div>
+			</div>
+			
+			<@spring.bind "member.password" />
+			<div class="form-group">
+				<label for="" class="control-label col-sm-2">Password</label>
+				<div class="col-sm-5">
+					<input type="password" name="${spring.status.expression}" 
+					class="form-control" value="${spring.status.value?default('')}"
+					placeholder="패스워드 입력"/>
+					<span class="error">${spring.status.errorMessage?default('')}</span>
+				</div>
+				<@spring.bind "member.passwordConfirm" />
+				<div class="col-sm-5">
+					<input type="password" name="${spring.status.expression}" 
+					class="form-control" value="${spring.status.value?default('')}"
+					placeholder="패스워드 재입력"/>
+					<span class="error">${spring.status.errorMessage?default('')}</span>
+				</div>
+			</div>
+			
+			<@spring.bind "member.name" />
+			<div class="form-group">
+				<label class="control-label col-sm-2">Name</label>
+				<div class="col-sm-10">
+					<input type="text" name="${spring.status.expression}" class="form-control"
+					value="${spring.status.value?default('')}"/>
+					<span class="error">${spring.status.errorMessage?default('')}</span>
+				</div>
+			</div>
+			
+			<@spring.bind "member.email" />
+			<div class="form-group">
+				<label class="control-label col-sm-2">E-mail</label>
+				<div class="col-sm-5">
+					<input type="text" name="${spring.status.expression}" class="form-control"
+					id="${spring.status.expression}"
+					value="${spring.status.value?default('')}" placeholder="ex) abcd@google.com"/>
+					<span id="email-error" class="error">${spring.status.errorMessage?default('')}</span>
+				</div>
+				<div class="col-sm-2">
+					<button class="btn btn-default btn-block" type="button" onclick="emailCertify();">인증 메일 발송</button>
+					<div class="progress">
+  						<div 
+  						role="progressbar" id="emailBar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+					</div>
+				</div>
+				<@spring.bind "member.emailCode" />
+				<div class="col-sm-3">
+					<input type="text" name="${spring.status.expression}" class="form-control"
+					value="${spring.status.value?default('')}" placeholder="인증코드 입력"/>
+					<span class="error">${spring.status.errorMessage?default('')}</span>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<div class="col-sm-10 col-sm-offset-2">
+					<button type="submit" class="btn btn-primary btn-block">submit</button>
+				</div>
+			</div>
+		</form>
+	</div>
+
+
+<#include "/include/footer.html" />
+<script src="/webjars/summernote/0.8.9/dist/summernote.min.js"></script>
+<script src="/webjars/summernote/0.8.9/dist/lang/summernote-ko-KR.js"></script>
+<script>
+	$("#content").summernote({
+		lang:"ko-KR",
+		tabsize:2,
+		height:150,
+		minHeight:100,
+		maxHeight:200
+	});
+	
+	function dupCheck(){
+		$.ajax({
+			url:"/member/dupCheck",
+			type:"post",
+			data:{id:$("#id").val()},
+			success:function(data){
+				if(data == 'dual'){
+					alert("중복된 아이디 입니다.");
+				}else{
+					alert("사용 가능합니다.");
+				}
+			}
+		});
+	}
+	
+	function emailCertify(){
+		//로딩바 시작
+		$("#emailBar").addClass("progress-bar");
+		$("#emailBar").addClass("progress-bar-striped");
+	    $("#emailBar").attr("style", "width:50%");
+		$.ajax({
+			url:"/member/emailcertify",
+			type:"post",
+			data:{email:$("#email").val()},
+			success:function(data){
+				if(data == 'null'){
+					$("#email-error").text("이메일을 입력해주세요");
+				}else if(data == 'incorrect'){
+					$("#email-error").text("이메일 형식이 올바르지 않습니다.");
+				}else if(data == 'duplicated'){
+					$("#email-error").text("이미 가입된 이메일입니다.");
+				}else if(data == 'error'){
+					$("#email-error").text("서버 오류입니다. 잠시 후 다시 시도하세요.");
+				}else{
+					//로딩바 종료
+					$("#emailBar").attr("style", "width:100%");
+					alert("이메일로 인증 메일을 전송했습니다. 인증 코드를 입력해주세요.");
+				}
+			}
+			
+		});
+	}
+	
+</script>
+</body>
+</html>

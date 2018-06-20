@@ -10,6 +10,7 @@
   <mappers>
     <!-- mapper추가 -->
     <mapper resource="mybatis/mapper/diary.xml"/>
+    <mapper resource="mybatis/mapper/member.xml"/>
   </mappers>
 </configuration>
 
