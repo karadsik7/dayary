@@ -9,5 +9,7 @@ public interface DiaryService {
 	public List<Diary> list();
 
 	public void add(Diary diary);
+
+	public List<Diary> list(String id);
 	
 }

@@ -31,7 +31,12 @@ create table member(
     gender char(1) check(gender in('m', 'f'))
 );
 
+alter table diary add constraint fk_diary_u_id foreign key(u_id) references member(id);
+
 desc member;
 select * from member;
+select * from diary;
+
+insert into member values('rrb', '123', 'rrb', 'efijoajf@ajfoi.cao', 'm');
 
 insert into member values('admin', '1234', '°ü¸®ÀÚ', 'asidfoajoifjiodsf@aa.aei', 'm');
