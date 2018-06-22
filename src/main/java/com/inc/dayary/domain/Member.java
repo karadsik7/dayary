@@ -1,5 +1,6 @@
 package com.inc.dayary.domain;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -20,6 +21,7 @@ public class Member {
 	private String name;
 	@Pattern(regexp="[A-Za-z0-9]+@[A-Za-z0-9]+.[A-Za-z]{2,10}")
 	private String email;
+	@NotEmpty(message="성별을 선택하세요")
 	@Pattern(regexp="[m|f]{1}", message="비정상적 데이터 접근입니다.")
 	private String gender;
 	private String emailCode;

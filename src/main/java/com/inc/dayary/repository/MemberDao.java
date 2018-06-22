@@ -19,6 +19,10 @@ public class MemberDao {
 	public Member getfindOneByEmail(String email) {
 		return sqlSession.selectOne("member.findOneByEmail", email);
 	}
+
+	public void signUp(Member member) {
+		sqlSession.insert("member.signup", member);
+	}
 	
 	
 	

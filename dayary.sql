@@ -32,5 +32,6 @@ create table member(
 );
 
 desc member;
+select * from member;
 
 insert into member values('admin', '1234', '°ü¸®ÀÚ', 'asidfoajoifjiodsf@aa.aei', 'm');

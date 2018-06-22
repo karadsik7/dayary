@@ -18,6 +18,10 @@
 		select * from member where email = #{value}
 	</select>
 	
+	<insert id="signup" parameterType="member">
+		insert into member values(#{id}, #{password}, #{name}, #{email}, #{gender})
+	</insert>
+	
 	
 	
 </mapper>

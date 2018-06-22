@@ -33,7 +33,7 @@ public class MemberController {
 	}
 	
 	@PostMapping("/member/signup")
-	public String signup(@ModelAttribute @Valid Member member, BindingResult result) {
+	public String signup(@ModelAttribute @Valid Member member, BindingResult result, HttpSession session) {
 		if(memberService.findOne(member.getId()) != null) {
 			result.addError(new FieldError("idError", "id", "중복된 아이디입니다."));
 		}
@@ -42,10 +42,20 @@ public class MemberController {
 					("passwordError", "passwordConfirm", "패스워드가 일치하지 않습니다.");
 			result.addError(error);
 		}
-		if(result.hasErrors()) {
+		if(!member.getEmail().equals((String)session.getAttribute("email"))) {
+			FieldError error = new FieldError("emailNotEqualsError", "email", "인증메일로 가입하세요");
+			result.addError(error);
+		}
+		if(!member.getEmailCode().equals((String)session.getAttribute("emailCode"))) {
+			FieldError error = new FieldError("emailCodeError", "emailCode", "코드가 일치하지 않습니다");
+			result.addError(error);
+		}
+		if(result.hasErrors()) {	
 			return "member/signup";
 		}
 		
+		memberService.signup(member);
+		session.invalidate();
 		return "redirect:/";
 	}
 	
