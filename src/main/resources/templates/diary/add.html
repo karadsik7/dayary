@@ -5,6 +5,11 @@
 <#include "/include/header.html" />
 <link rel="stylesheet" href="/webjars/summernote/0.8.9/dist/summernote.css" />
 <title>Add</title>
+<style>
+#tags{
+	height: 34px;
+}
+</style>
 </head>
 <body>
 <#include "/include/nav.html" />
@@ -18,6 +23,33 @@
 					<span class="error">${spring.status.errorMessages[0]?default('')}</span>
 				</div>
 			</div>
+			
+			<div class="form-group">
+				<label class="control-label col-sm-2">Tagging</label>
+				<div class="col-sm-10">
+					<div class="row">
+						<div class="col-sm-2">
+							<input type="text" id="tag-name" class="form-control" placeholder="한글 최대 10글자"/>
+						</div>
+						<div class="col-sm-2">
+							<select id="tag-color" class="form-control">
+								<option value="danger">빨강</option>
+								<option value="success">초록</option>
+								<option value="primary">파랑</option>
+								<option value="warning">노랑</option>
+								<option value="default">회색</option>
+							</select>
+						</div>
+						<div class="col-sm-1">
+							<button type="button" onclick="addTag();" class="btn btn-danger">추가</button>
+						</div>
+						<div class="col-sm-7" id="tags">
+							
+						</div>
+					</div>
+				</div>
+			</div>
+			
 			<@spring.bind "diary.content" />
 			<div class="form-group">
 				<label for="" class="control-label col-sm-2">Content</label>
@@ -49,6 +81,30 @@
 		minHeight:100,
 		maxHeight:200
 	});
+	
+	var idx = 0;
+	function addTag(){
+		var name = $("#tag-name").val();
+		if(name != ""){
+			var color = $("#tag-color").val();
+			var $tag = $("<span></span>");
+			$tag.text(name);
+			$tag.addClass("label");
+			$tag.addClass("label-"+color);
+			$("#tags").append($tag);
+			$("#tags").html($("#tags").html()+"&nbsp;");
+			
+			$("#tags").append(
+				"<input type='hidden' name='tags["+idx+"].name' value='"+name+"'/>");
+			$("#tags").append(
+				"<input type='hidden' name='tags["+idx+"].color' value='"+color+"'/>");
+			idx++;
+			$("#tag-name").val('');
+		}else{
+			alert("태그 이름을 입력하세요");
+		}
+		
+	}
 </script>
 </body>
 </html>

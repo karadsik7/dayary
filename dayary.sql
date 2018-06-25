@@ -40,3 +40,14 @@ select * from diary;
 insert into member values('rrb', '123', 'rrb', 'efijoajf@ajfoi.cao', 'm');
 
 insert into member values('admin', '1234', '°ü¸®ÀÚ', 'asidfoajoifjiodsf@aa.aei', 'm');
+
+create table tag(
+    id number primary key,
+    d_id number references diary(id),
+    name varchar2(30) not null,
+    color varchar2(10) default 'default' not null
+);
+
+create sequence seq_tag_id;
+
+desc tag;

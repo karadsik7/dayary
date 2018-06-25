@@ -21,6 +21,7 @@ public class DiaryController {
 	@Autowired
 	private DiaryService diaryService;
 	
+	
 	@GetMapping("/")
 	public String main(Model model, HttpSession session) {
 		model.addAttribute("diaryList", diaryService.list());
@@ -50,6 +51,8 @@ public class DiaryController {
 		diaryService.add(diary);
 		return "redirect:/";
 	}
+	
+	
 	
 	
 	
